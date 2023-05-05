@@ -1,0 +1,51 @@
+class node:
+  def __init__(self, state, parent, actions, totalcost):
+    self.state=state
+    self.parent=parent
+    self.actions=actions
+    self.totalcost=totalcost
+Graph={
+        'A':node('A', None, ['B', 'C', 'E'],None),
+        'B':node('B', None, ['A', 'D', 'E'],None),
+        'C':node('C', None, ['A', 'F', 'G'],None),
+        'D':node('D', None, ['B', 'E'],None),
+        'E':node('E', None, ['A', 'B', 'D'],None),
+        'F':node('F', None, ['C'],None),
+        'G':node('G', None, ['C'],None)
+        }
+def actionsequence (Graph,initialstate,goalstate):
+  solution=[goalstate]
+  currentparent=Graph[goalstate].parent
+  while currentparent!=None:
+    solution.append(currentparent)
+    currentparent=Graph[currentparent].parent
+  solution.reverse()
+  return solution    
+def DFS():
+  initialstate = 'A'
+  goalstate = 'F'
+  Graph = {
+        'A': node('A', None, ['B', 'C', 'E'], None),
+        'B': node('B', None, ['A', 'D', 'E'], None),
+        'C': node('C', None, ['A', 'F', 'G'], None),
+        'D': node('D', None, ['B', 'E'], None),
+        'E': node('E', None, ['A', 'B', 'D'], None),
+        'F': node('F', None, ['C'], None),
+        'G': node('G', None, ['C'], None)
+    }
+  stack = [initialstate]
+  explored = []
+  while len(stack) != 0:
+    currentnode = stack.pop()
+    explored.append(currentnode)
+    for child in Graph[currentnode].actions:
+      if child not in stack and child not in explored:
+        Graph[child].parent = currentnode
+        if Graph[child].state == goalstate:
+          return actionsequence(Graph, initialstate, goalstate)
+        stack.append(child)
+  return None
+
+solution = DFS()
+print(solution)
+ 
